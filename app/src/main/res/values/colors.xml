@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="repo_name">#0969da</color>
     <color name="repo_visibility">#57606a</color>
+    <color name="github_repo_base_color">#57606a</color>
 </resources>

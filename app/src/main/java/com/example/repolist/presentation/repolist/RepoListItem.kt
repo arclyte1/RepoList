@@ -2,12 +2,13 @@ package com.example.repolist.presentation.repolist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.example.repolist.R
 import com.example.repolist.databinding.FragmentRepoListItemBinding
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class RepoListItem(
-    private val repoListItemVo: RepoListItemVo
+    val repoListItemVo: RepoListItemVo
 ) : AbstractBindingItem<FragmentRepoListItemBinding>() {
 
     override val type: Int
@@ -22,5 +23,12 @@ class RepoListItem(
 
     override fun bindView(binding: FragmentRepoListItemBinding, payloads: List<Any>) {
         binding.name.text = repoListItemVo.name
+        binding.visibility.text = repoListItemVo.visibility
+        binding.language.text = repoListItemVo.language
+        binding.language.isVisible = repoListItemVo.language != ""
+        binding.languageCircle.isVisible = repoListItemVo.languageColor != null
+        if (repoListItemVo.languageColor != null)
+            binding.languageCircle.setColorFilter(repoListItemVo.languageColor)
+        binding.updatedOn.text = repoListItemVo.updatedOn
     }
 }

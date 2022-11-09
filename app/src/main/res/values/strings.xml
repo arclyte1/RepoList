@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">RepoList</string>
     <string name="auth_failed">Неудачный вход, попробуйте снова</string>
+    <string name="repo_visibility_private">Private</string>
+    <string name="repo_visibility_public">Public</string>
+    <string name="updated_on_date">Updated on %1$s %2$d, %3$d</string>
+    <string name="authorize">Authorize</string>
+
 </resources>

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/name"
@@ -19,7 +20,7 @@
         tools:text="easy_study" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/visibility"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -29,19 +30,39 @@
         android:paddingVertical="4dp"
         android:textColor="@color/repo_visibility"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Public" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/languageCircle"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:text="Kotlin" />
+
+    <ImageView
+        android:id="@+id/languageCircle"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/github_language_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:tint="@color/Kotlin" />
+
+    <TextView
+        android:id="@+id/updatedOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/language"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="Kotlin"/>
+        tools:text="Updated on Aug 20, 2021"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

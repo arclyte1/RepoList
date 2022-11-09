@@ -8,8 +8,11 @@ import retrofit2.http.Query
 interface GithubApi {
 
     @GET("/user/repos")
-    fun getRepoList(
+    suspend fun getRepoList(
         @Header("Authorization") authorization: String,
+        @Header("Host") host: String,
+        @Header("User-Agent") userAgent: String,
+        @Header("Accept") accept: String,
         @Query("sort") sort: String,
         @Query("per_page") perPage: Int,
     ): List<RepoDto>

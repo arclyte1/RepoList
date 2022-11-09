@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.repolist"
-        minSdk 23
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,12 @@ android {
         manifestPlaceholders = [
                 appAuthRedirectScheme: "com.example.oauth"
         ]
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField("String", "CLIENT_ID", properties['CLIENT_ID'])
+        buildConfigField("String", "CLIENT_SECRET", properties['CLIENT_SECRET'])
     }
 
     buildTypes {
@@ -72,4 +78,7 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // Joda-Time
+    implementation 'joda-time:joda-time:2.12.1'
 }

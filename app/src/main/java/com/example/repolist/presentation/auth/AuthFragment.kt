@@ -3,19 +3,17 @@ package com.example.repolist.presentation.auth
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.repolist.R
 import com.example.repolist.common.Constants
 import com.example.repolist.databinding.FragmentAuthBinding
 import com.example.repolist.domain.model.Tokens
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,16 +48,14 @@ class AuthFragment: Fragment(R.layout.fragment_auth) {
             viewModel.tokensFlow.collect { tokens ->
                 if (tokens != null)
                     navigateToRepoList(tokens)
-                else
-                    Snackbar.make(
-                        binding.root,
-                        resources.getString(R.string.auth_failed),
-                        Snackbar.LENGTH_LONG
-                    ).show()
             }
         }
 
-        viewModel.openLoginPage()
+        lifecycleScope.launchWhenStarted {
+            viewModel.isLoading.collect { isLoading ->
+                binding.loading.isVisible = isLoading
+            }
+        }
     }
 
     private fun navigateToRepoList(tokens: Tokens) {

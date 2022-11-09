@@ -5,6 +5,7 @@ import com.example.repolist.common.Constants
 import com.example.repolist.data.remote.GithubApi
 import com.example.repolist.data.repository.AuthRepositoryImpl
 import com.example.repolist.data.repository.RepoListRepositoryImpl
+import com.example.repolist.domain.repository.AuthRepository
 import com.example.repolist.domain.repository.RepoListRepository
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGithubApi() = Retrofit
+    fun provideGithubApi(): GithubApi = Retrofit
         .Builder()
         .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -43,6 +44,14 @@ class AppModule {
         api: GithubApi
     ) : RepoListRepository {
         return RepoListRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        authService: AuthorizationService
+    ) : AuthRepository {
+        return AuthRepositoryImpl(authService)
     }
 
 }

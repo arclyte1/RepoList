@@ -1,6 +1,5 @@
 package com.example.repolist.data.repository
 
-import android.util.Log
 import com.example.repolist.common.Constants
 import com.example.repolist.data.remote.GithubApi
 import com.example.repolist.domain.model.Repo
@@ -11,11 +10,14 @@ class RepoListRepositoryImpl @Inject constructor(
     private val api: GithubApi
 ) : RepoListRepository {
 
-    override fun getRepoList(authorizationToken: String): List<Repo> {
+    override suspend fun getRepoList(authorizationToken: String): List<Repo> {
         val response = api.getRepoList(
             authorization = authorizationToken,
-            sort = Constants.GUTHUB_API_REPO_LIST_SORT,
-            perPage = Constants.GITHUB_API_REPO_LIST_LIMIT
+            host = Constants.GITHUB_API_HOST,
+            userAgent = Constants.USER_AGENT,
+            sort = Constants.GITHUB_API_REPO_LIST_SORT,
+            perPage = Constants.GITHUB_API_REPO_LIST_LIMIT,
+            accept = Constants.GITHUB_API_ACCEPT,
         ).map { it.toRepo() }
         return response
     }

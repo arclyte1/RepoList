@@ -1,19 +1,17 @@
 package com.example.repolist.presentation.auth
 
-import android.app.Application
-import android.content.Context
 import android.content.Intent
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.repolist.App
-import com.example.repolist.data.repository.AuthRepositoryImpl
+import com.example.repolist.common.Resource
 import com.example.repolist.domain.model.Tokens
+import com.example.repolist.domain.usecase.GetAuthorizationIntentUseCase
+import com.example.repolist.domain.usecase.GetTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.TokenRequest
@@ -21,19 +19,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    @ApplicationContext context: Context,
-    private val repositoryImpl: AuthRepositoryImpl
-) : AndroidViewModel(context as Application) {
+    private val getTokenUseCase: GetTokenUseCase,
+    private val getAuthorizationIntentUseCase: GetAuthorizationIntentUseCase,
+) : ViewModel() {
 
     val openAuthPageFlow = MutableSharedFlow<Intent>()
 
     val tokensFlow = MutableStateFlow<Tokens?>(null)
 
+    val isLoading = MutableStateFlow(false)
+
     fun openLoginPage() {
-        viewModelScope.launch {
-            val intent = repositoryImpl.getAuthorizationIntent()
-            openAuthPageFlow.emit(intent)
-        }
+        getAuthorizationIntentUseCase().onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    isLoading.value = true
+                }
+                is Resource.Error -> {
+                    isLoading.value = false
+                }
+                is Resource.Success -> {
+                    isLoading.value = false
+                    openAuthPageFlow.emit(result.data!!)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun handleAuthResponse(intent: Intent) {
@@ -46,15 +56,17 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun getToken(tokenRequest: TokenRequest) {
-        repositoryImpl.getToken(tokenRequest)
-        viewModelScope.launch {
-            repositoryImpl.tokensStateFlow.collect { result ->
-                if (result != null && result.isSuccess) {
+        getTokenUseCase(tokenRequest).onEach { result ->
+            when (result) {
+                null -> {
+                    isLoading.value = true
+                }
+                else -> {
+                    isLoading.value = false
                     tokensFlow.value = result.getOrNull()
-                    Log.d("OAuth", result.getOrNull().toString())
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
 }
