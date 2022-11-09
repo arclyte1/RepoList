@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/authFragment">
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.repolist.presentation.auth.AuthFragment"
+        android:label="AuthFragment" >
+        <action
+            android:id="@+id/action_authFragment_to_repoListFragment"
+            app:destination="@id/repoListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoListFragment"
+        android:name="com.example.repolist.presentation.repolist.RepoListFragment"
+        android:label="RepoListFragment" />
+</navigation>

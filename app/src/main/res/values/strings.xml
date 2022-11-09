@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RepoList</string>
+    <string name="auth_failed">Неудачный вход, попробуйте снова</string>
+</resources>
